@@ -57,9 +57,8 @@ def ask(question):
     return g4f.ChatCompletion.create(
         model=g4f.models.gpt_4,
         messages=[{"role":"user","content":question}],
-        provider=g4f.Provider.Bing,
     )
-generatedCommand=ask("[[convert this string to command line for shell "+sh+", for platform "+platform.system()+", [[no extra text, no codeblock, no explanation, no markdown, no introduction]], this will be automatically run, so there should be no extra text or explanation]]: "+" ".join(command))
+generatedCommand=ask("[[convert this string to command line for shell "+sh+", for platform "+platform.system()+", [[no extra text, no codeblock, no explanation, no markdown, no introduction, no Hello, this is Bing]], this will be automatically run, so there should be no extra text or explanation]]: "+" ".join(command))
 running=True
 def run(*command):
     subprocess.run("".join(command), shell=True)
