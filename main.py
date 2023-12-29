@@ -16,6 +16,7 @@ import shellingham # for detecting shell
 import platform # for detecting platform
 import os # for creating config file
 import configparser # for parsing config file
+import subprocess # for running command
 config=configparser.ConfigParser()
 # check if platform is linux
 if platform.system()=="Linux":
@@ -38,7 +39,7 @@ if platform.system() == "Windows":
 else:
     import getch 
 from colorama import Fore, Back, Style # for coloring output
-import subprocess # for running command
+
 if len(sys.argv) > 1:
     command = sys.argv[1:]
 else:
