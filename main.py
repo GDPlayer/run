@@ -14,6 +14,16 @@ g4f.debug.check_version=False
 import sys # for grabbing command
 import shellingham # for detecting shell
 import platform # for detecting platform
+import os # for creating config file
+import configparser # for parsing config file
+# check for .config file if not found, create it
+config=configparser.ConfigParser()
+if not os.path.exists('.config'):
+    config['run']={'alwaysAccept': False}
+    with open('.config', 'w') as configfile:
+        config.write(configfile)
+config.read('.config')
+# config['run']['alwaysAccept'] - whether to automatically run the command
 if platform.system() == "Windows":
     import msvcrt as getch
 else:
@@ -49,14 +59,18 @@ def explain(*command):
     print(ask("explain the command, for shell "+sh+", for platform "+platform.system()+",[[[[no introduction of self, just explain the command]]]], also no markdown since this is in a console, make your response short :) and space it out using newlines: "+generatedCommand)+"\n")
 while running:
     print(Style.BRIGHT+"running \""+generatedCommand+"\""+Style.RESET_ALL)
-    print(Style.BRIGHT+Fore.GREEN+"enter"+Style.RESET_ALL+" - run/confirm")
-    print(Style.BRIGHT+Fore.RED+"backspace"+Style.RESET_ALL+" - cancel")
-    print(Style.BRIGHT+Fore.YELLOW+"e"+Style.RESET_ALL+" - explain")
-    char=ord(getch.getch())
-    if char==13:
-        run(generatedCommand)
-        running=False
-    elif char==101:
-        explain(generatedCommand)
+    if config["run"]["alwaysAccept"]=="False":
+        print(Style.BRIGHT+Fore.GREEN+"enter"+Style.RESET_ALL+" - run/confirm")
+        print(Style.BRIGHT+Fore.RED+"backspace"+Style.RESET_ALL+" - cancel")
+        print(Style.BRIGHT+Fore.YELLOW+"e"+Style.RESET_ALL+" - explain")
+        char=ord(getch.getch())
+        if char==13:
+            run(generatedCommand)
+            running=False
+        elif char==101:
+            explain(generatedCommand)
+        else:
+           running=False
     else:
+        run(generatedCommand)
         running=False
