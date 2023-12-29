@@ -16,13 +16,21 @@ import shellingham # for detecting shell
 import platform # for detecting platform
 import os # for creating config file
 import configparser # for parsing config file
-# check for .config file if not found, create it
 config=configparser.ConfigParser()
-if not os.path.exists('.config'):
-    config['run']={'alwaysAccept': False}
-    with open('.config', 'w') as configfile:
-        config.write(configfile)
-config.read('.config')
+# check if platform is linux
+if platform.system()=="Linux":
+    if not os.path.exists('~/.config/run.config'):
+        config['run']={'alwaysAccept': False}
+        with open('.config', 'w') as configfile:
+            config.write(configfile)
+    config.read('~/.config/run.config')
+elif platform.system()=="Windows":
+    appdata=os.getenv('APPDATA')
+    if not os.path.exists(appdata+'\\run.config'):
+        config['run']={'alwaysAccept': False}
+        with open(appdata+'\\run.config', 'w') as configfile:
+            config.write(configfile)
+    config.read(appdata+'\\run.config')
 # config['run']['alwaysAccept'] - whether to automatically run the command
 if platform.system() == "Windows":
     import msvcrt as getch
