@@ -21,7 +21,7 @@ config=configparser.ConfigParser()
 if platform.system()=="Linux":
     if not os.path.exists('~/.config/run.config'):
         config['run']={'alwaysAccept': False}
-        with open('.config', 'w') as configfile:
+        with open('~/.config/run.config', 'w') as configfile:
             config.write(configfile)
     config.read('~/.config/run.config')
 elif platform.system()=="Windows":

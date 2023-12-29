@@ -1,0 +1,4 @@
+colorama==0.4.6
+g4f==0.1.9.7
+getch==1.0
+shellingham==1.5.4
