@@ -20,6 +20,7 @@ import subprocess # for running command
 config=configparser.ConfigParser()
 # check if platform is linux
 if platform.system()=="Linux":
+    print("WARNING: Linux version untested!")
     if not os.path.exists('~/.config/run.config'):
         config['run']={'alwaysAccept': False}
         subprocess.run("touch ~/.config/run.config", shell=True)
@@ -59,7 +60,12 @@ def ask(question):
         messages=[{"role":"user","content":question}],
 	provider=g4f.Provider.Bing,
     )
-generatedCommand=ask("[[convert this string to command line for shell "+sh+", for platform "+platform.system()+", additional context: cwd: "+os.getcwd()+", [[[[no extra text, no codeblock]], [[no explanation, no markdown, no introduction, no Hello, this is Bing]]]], [[[[this will be [[automatically run]], so there should be no extra text or explanation]]]]]]: "+" ".join(command))
+generatedCommand=ask("""
+[[convert this string to command line for shell """+sh+""", for platform """+platform.system()+""", 
+additional context: cwd: """+os.getcwd()+""", [[[[no extra text, no codeblock]], 
+[[no explanation, no markdown, no introduction, no Hello, this is Bing]]]], 
+[[[[this will be [[automatically run]], so there should be no extra text or explanation]]]]
+]]: run """+" ".join(command))
 running=True
 def run(*command):
     subprocess.run("".join(command), shell=True)
